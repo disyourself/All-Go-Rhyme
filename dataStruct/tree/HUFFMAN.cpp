@@ -1,6 +1,7 @@
-
-
 #include <iostream>
+#include <ostream>
+#include <stdio.h>
+
 typedef struct TreeNode
 {
     int weight;
@@ -21,6 +22,7 @@ initTree (int *weight, int length)
     HFM *T = new HFM;
     T->data = new TreeNode[2 * length - 1];
     T->length = length;
+
     for (int i = 0; i < length; i++)
     {
         T->data[i].weight = weight[i];
@@ -38,21 +40,20 @@ selectMin (HFM *T)
     int secondMin = 10000;
     int minIndex;
     int secondIndex;
+
     for (int i = 0; i < T->length; i++)
     {
         if (T->data[i].parent == 0)
-        {
             if (T->data[i].weight < min)
             {
                 min = T->data[i].weight;
                 minIndex = i;
             }
-        }
     }
     for (int i = 0; i < T->length; i++)
     {
         if (T->data[i].parent == 0 && i != minIndex)
-            if (T->data[i].weight < min)
+            if (T->data[i].weight < secondMin)
             {
                 secondMin = T->data[i].weight;
                 secondIndex = i;
@@ -71,24 +72,45 @@ createHFM (HFM *T)
     int min;
     int secondMin;
     int length = T->length * 2 - 1;
+
     for (int i = T->length; i < length; i++)
     {
         res = selectMin (T);
         min = res[0];
         secondMin = res[1];
+
+        // add new node init its father
+        T->data[i].parent = 0;
+
         T->data[i].weight = T->data[min].weight + T->data[secondMin].weight;
-        T->data->lchild = min;
+        T->data[i].lchild = min;
+        T->data[i].rchild = secondMin;
+        // remove from select min
+        T->data[min].parent = i;
+        T->data[secondMin].parent = i;
+        T->length++;
+    }
+}
+
+void
+preOrder (HFM *T, int index)
+{
+    if (index != -1)
+    {
+        printf ("%d ", T->data[index].weight);
+        preOrder (T, T->data[index].lchild);
+        preOrder (T, T->data[index].rchild);
     }
 }
 
 int
 main (int argc, char **argv)
 {
-    int weight[4] = { 1, 2, 3, 4 };
-    HFM *T = initTree (weight, 4);
+    int weight[7] = { 5, 1, 3, 6, 11, 2, 4 };
+    HFM *T = initTree (weight, 7);
+    createHFM (T);
 
-    int *res = selectMin (T);
-    std::cout << "res[0]= " << res[0];
-    std::cout << "res[1]= " << res[1];
+    preOrder (T, T->length - 1);
+    std::cout << std::endl;
     return 0;
 }
