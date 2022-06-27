@@ -4,14 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build c++",
             "type": "process",
             "command": "g++",
             "args": [
                 "-g",
                 "${file}",
+                "-Wall",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -20,9 +21,6 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        }
+        },
     ]
 }

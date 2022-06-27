@@ -54,30 +54,6 @@ printString (String *s)
     printf ("\n");
 }
 
-// int *
-// getNext (String *s)
-// {
-//     int *next = (int *)malloc (sizeof (int) * s->len);
-
-//     int i = 0;
-//     int j = -1;
-//     next[i] = j;
-//     while (i < s->len - 1)
-//     {
-//         if (j == -1 || s->data[i] == s->data[j])
-//         {
-//             i++;
-//             j++;
-//             next[i] = j;
-//         }
-//         else
-//         {
-//             j = next[j];
-//         }
-//     }
-//     return next;
-// }
-
 void
 printNext (int *next, int len)
 {
@@ -87,30 +63,6 @@ printNext (int *next, int len)
     }
     printf ("\n");
 }
-
-// void
-// kmpMatch (String *master, String *sub, int *next)
-// {
-//     int j = 0;
-//     int i = 0;
-
-//     while (i < master->len && j < sub->len)
-//     {
-//         if (j == -1 || master->data[i] == sub->data[j])
-//         {
-//             i++;
-//             j++;
-//         }
-//         else
-//         {
-//             j = next[j];
-//         }
-//     }
-//     if (j == sub->len)
-//         printf ("kmp match success.\n");
-//     else
-//         printf ("kmp match failed.\n");
-// }
 
 int *
 getNext (String *s)

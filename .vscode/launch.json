@@ -13,7 +13,8 @@
                 "ABD##E##C##"
             ],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build"
+            "preLaunchTask": "build c++",
+            "internalConsoleOptions": "neverOpen",
         }
     ]
 }
