@@ -5,7 +5,7 @@ BreakBeforeBraces: Allman
 TabWidth: 4
 
 # 连续赋值时，对齐所有等号
-AlignConsecutiveAssignments: true
+# AlignConsecutiveAssignments: true
  
 # 连续声明时，对齐所有声明的变量名
 AlignConsecutiveDeclarations: true
@@ -20,6 +20,6 @@ MaxEmptyLinesToKeep: 1
 PenaltyBreakComment: 300
 
 # 每行字符的限制，0表示没有限制
-ColumnLimit: 130
+ColumnLimit: 0
 
 Standard: Auto
