@@ -10,11 +10,13 @@ class Trie
   private:
     struct TrieNode
     {
-        char                  ch;
+        char ch;
+        bool flag;
+
         map<char, TrieNode *> nodes;
 
-        TrieNode () {}
-        TrieNode (char c) : ch (c) {}
+        TrieNode () : ch (0) {}
+        TrieNode (char c) : ch (c), flag (false) {}
     };
 
   public:
@@ -40,10 +42,9 @@ class Trie
             if (current->nodes[ch] == nullptr) {
                 current->nodes[ch] = new TrieNode (ch);
             }
-            else {
-                current = current->nodes[ch];
-            }
+            current = current->nodes[ch];
         }
+        current->flag = true;
     }
 
     bool
@@ -56,12 +57,10 @@ class Trie
             if (current->nodes[ch] == nullptr) {
                 return false;
             }
-            else {
-                current = current->nodes[ch];
-            }
+            current = current->nodes[ch];
         }
 
-        return current->nodes.empty () ? false : true;
+        return current->flag;
     }
 
     bool
@@ -74,12 +73,56 @@ class Trie
             if (current->nodes[ch] == nullptr) {
                 return false;
             }
-            else {
-                current = current->nodes[ch];
-            }
+            current = current->nodes[ch];
         }
 
-        return current->nodes.empty () ? true : false;
+        // 脑残逻辑 1
+        {
+            //        // 节点的nodes为空(无后续)
+            //        if (current->nodes.empty ()) {
+            //            return true;
+            //        }
+            //        // 节点不是终止节点
+            //        if (current->flag == false) {
+            //            return true;
+            //        }
+            //        else {
+            //            // 节点的nodes的指针全部为空
+            //
+            //			bool tf = true;
+            //
+            //            for (std::pair<char, TrieNode *> i : current->nodes) {
+            //                // 只要有一个不会 null, 则视为 current 的 nodes 不为空
+            //				// 即 当前节点还有后续节点， 而end flag 为 true
+            //                // 所以  startsWith 为 false
+            //                if (i.second != nullptr) {
+            //					tf= false;
+            //					break;
+            //                }
+            //            }
+            //
+            //			return tf;
+            //        }
+        }
+
+
+        // 脑残逻辑 2
+        {
+            //            // 无后续 nodes, ret true
+            //            if (current->nodes.empty ()) {
+            //                return true;
+            //            }
+            //            // 为 end node，flag 为true, ret true
+            //            if (current->flag) {
+            //                return true;
+            //            }
+            //
+            //            return true;
+        }
+
+
+        // 只需要 return true 就行了， 不需要判断
+        return true;
     }
 
     void
@@ -122,12 +165,26 @@ main ()
 {
     Trie tree;
 
+    //    tree.insert ("apple");
+    //
+    //    tree.PrintTree ();
+    //    // tree.LayerPrint (tree.m_root->nodes);
+    //
+    //    cout << (tree.search ("apple") ? "true" : "false") << std::endl;
+    //    cout << (tree.search ("app") ? "true" : "false") << std::endl;
+    //    cout << (tree.startsWith ("app") ? "true" : "false") << std::endl;
+    //
+    //    tree.insert ("app");
+    //
+    //    cout << (tree.search ("app") ? "true" : "false") << std::endl;
+
     tree.insert ("hello");
-    tree.insert ("hbllo");
+    tree.PrintTree ();
 
-    // tree.PrintTree();
-    tree.LayerPrint (tree.m_root->nodes);
-
+    cout << (tree.search ("hello") ? "true" : "false") << endl;
+    cout << (tree.startsWith ("hell") ? "true" : "false") << endl;
+    cout << (tree.startsWith ("helloa") ? "true" : "false") << endl;
+    cout << (tree.startsWith ("hello") ? "true" : "false") << endl;
     return 0;
 }
 
