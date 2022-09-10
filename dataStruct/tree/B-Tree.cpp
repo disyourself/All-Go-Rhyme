@@ -13,18 +13,18 @@ typedef struct Node
 Node *
 initNode (int level)
 {
-    Node *node = new Node;
-    node->level = level;
-    node->keyNum = 0;
+    Node *node     = new Node;
+    node->level    = level;
+    node->keyNum   = 0;
     node->childNum = 0;
-    node->keys = new int[level + 1];
+    node->keys     = new int[level + 1];
     node->children = new Node *[level];
-    node->parent = nullptr;
+    node->parent   = nullptr;
 
     int i;
     for (i = 0; i < level; ++i)
     {
-        node->keys[i] = 0;
+        node->keys[i]     = 0;
         node->children[i] = nullptr;
     }
     node->keys[i] = 0;
@@ -44,7 +44,7 @@ findSuiteIndex (Node *node, int data)
     return index;
 }
 
-// find proper insert leaf in one node's chilren
+// find proper insert leaf in one node's children
 Node *
 findSuiteLeafNode (Node *T, int data)
 {
@@ -70,11 +70,11 @@ addData (Node *node, int data, Node **T)
     node->keys[index] = data;
     node->keyNum++;
 
-    // judge T/F spilit
+    // judge T/F spilt
     if (node->keyNum == node->level)
     {
         // find split pos
-        int   mid = node->level / 2 + node->level % 2;
+        int   mid    = node->level / 2 + node->level % 2;
         Node *lchild = initNode (node->level);
         Node *rchild = initNode (node->level);
 
@@ -84,7 +84,7 @@ addData (Node *node, int data, Node **T)
         for (int i = mid + 1; i <= node->keyNum; ++i)
             addData (rchild, node->keys[i], T);
 
-        // move node's left part children to  mid that splited's left child
+        // move node's left part children to  mid that split's left child
         for (int i = 0; i < mid; ++i)
         {
             lchild->children[i] = node->children[i];
@@ -115,14 +115,14 @@ addData (Node *node, int data, Node **T)
 
             newParent->children[0] = lchild;
             newParent->children[1] = rchild;
-            newParent->childNum = 2;
-            lchild->parent = newParent;
-            rchild->parent = newParent;
-            *T = newParent;
+            newParent->childNum    = 2;
+            lchild->parent         = newParent;
+            rchild->parent         = newParent;
+            *T                     = newParent;
         }
         else
         {
-            int index = findSuiteIndex (node->parent, node->keys[mid]);
+            int index      = findSuiteIndex (node->parent, node->keys[mid]);
             lchild->parent = node->parent;
             rchild->parent = node->parent;
             // replace the pos that node's mid move to its parent after splited left
