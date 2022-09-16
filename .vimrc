@@ -1,15 +1,11 @@
 
 call plug#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-"Plugin 'VundleVim/Vundle.vim'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'scrooloose/nerdtree'  "目录树
 Plug 'frazrepo/vim-rainbow' "彩虹括号
 Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs' "括号配对
+"Plug 'jiangmiao/auto-pairs' "括号配对
 
 " Theme
 Plug 'joshdick/onedark.vim'
@@ -60,7 +56,7 @@ set statusline+=%5*\%3p%%\%*            "显示光标前文本所占总文本的
 
 " 			YCM
 " Let clangd fully control code completion
-"let g:ycm_clangd_uses_ycmd_caching = 0
+let g:ycm_clangd_uses_ycmd_caching = 0
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = "/usr/sbin/clangd"
 " 允许自动加载.ycm_extra_conf.py，不再提示                         
@@ -105,6 +101,7 @@ map <F3> :NERDTreeToggle<CR>
 noremap <C-d> :call SavedAndOpenTerm()<CR>
 noremap <F4> :YcmCompleter GoToDocumentOutline<CR>
 noremap <C-s> :call Save_Format()<CR>
+noremap <C-h> :YcmCompleter FixIt<CR>
 
 def Save_Format() 
 	:w
@@ -113,7 +110,7 @@ enddef
 
 def SavedAndOpenTerm()
 	:w
-	:bo term ++rows=10
+	:bo term 
 enddef
 
 
@@ -124,4 +121,8 @@ hi User2 cterm=none ctermfg=208 ctermbg=0
 hi User3 cterm=none ctermfg=169 ctermbg=0
 hi User4 cterm=none ctermfg=100 ctermbg=0
 hi User5 cterm=none ctermfg=green ctermbg=0
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
 
