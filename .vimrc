@@ -29,6 +29,7 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 call plug#end()            " required
 
 
+
 "Credit joshdick "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
 "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
 "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
@@ -78,7 +79,7 @@ set tabstop=4
 set cindent
 set number
 set path+=/usr/local/include/
-set foldmethod=manual
+set foldmethod=syntax
 set autoindent
 set showcmd
 
@@ -102,6 +103,7 @@ noremap <C-d> :call SavedAndOpenTerm()<CR>
 noremap <F4> :YcmCompleter GoToDocumentOutline<CR>
 noremap <C-s> :call Save_Format()<CR>
 noremap <C-h> :YcmCompleter FixIt<CR>
+noremap <C-k> :YcmCompleter GetType<CR>
 
 def Save_Format() 
 	:w
