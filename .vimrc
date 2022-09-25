@@ -55,6 +55,8 @@ set statusline+=%5*\%3p%%\%*            "显示光标前文本所占总文本的
 
 
 
+let g:rainbow_active=1
+
 " 			YCM
 " Let clangd fully control code completion
 let g:ycm_clangd_uses_ycmd_caching = 0
@@ -67,10 +69,18 @@ let g:ycm_complete_in_comments=1
 " 开启tags补全引擎                                                 
 let g:ycm_collect_identifiers_from_tags_files=1   
 let g:ycm_goto_buffer_command = 'horizontal-split' " 跳转打开上下分屏
-let g:rainbow_active=1
 
 let g:ycm_enable_inlay_hints=1
 
+" 补全时候不要弹出原型窗口
+set completeopt=menu,menuone
+let g:ycm_add_preview_to_completeopt = 0
+
+let g:ycm_max_num_candidates = 30 " 语义补全候选数量
+let g:ycm_min_num_identifier_candidates = 5
+let g:ycm_max_num_identifier_candidates = 10 " 标识符候选数量
+
+let g:ycm_warning_symbol = "W"   " 警告标志
 
 syntax on
 syntax enable
@@ -82,6 +92,7 @@ set path+=/usr/local/include/
 set foldmethod=syntax
 set autoindent
 set showcmd
+set mouse=a
 
 filetype indent on
 
