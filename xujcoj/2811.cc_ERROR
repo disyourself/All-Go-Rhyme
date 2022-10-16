@@ -1,0 +1,60 @@
+// 2811 好看的字符串
+
+#include <cstdint>
+#include <iostream>
+#include <sys/types.h>
+#include <unordered_map>
+#include <vector>
+
+
+
+using namespace std;
+
+
+int getValueOfBeauty(string str, uint lenth)
+{
+    int ret = lenth;
+
+    std::vector<char> last(128, -1);
+    std::vector<char> lastOfLast(128, -1);
+
+
+    for (int i = 0; i < lenth; ++i)
+    {
+        char ch = str[i];
+        if (last[ch] == -1) {
+            last[ch] = i;
+        }
+        else if (last[ch] != lastOfLast[ch])
+        {
+            lastOfLast[ch] = last[ch];
+            last[ch]       = i;
+            --ret;
+        }
+    }
+
+    return ret;
+}
+
+
+
+int main()
+{
+    int setNum = 0;
+    std::cin >> setNum;
+
+    while (setNum > 0)
+    {
+        uint   lenth;
+        string str;
+        cin >> lenth >> str;
+
+        int result = getValueOfBeauty(str, lenth);
+        cout << result << endl;
+
+        --setNum;
+    }
+
+
+    return 0;
+}

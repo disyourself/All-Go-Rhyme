@@ -5,7 +5,7 @@ Plug 'ycm-core/YouCompleteMe'
 Plug 'scrooloose/nerdtree'  "目录树
 Plug 'frazrepo/vim-rainbow' "彩虹括号
 Plug 'tpope/vim-surround'
-"Plug 'jiangmiao/auto-pairs' "括号配对
+Plug 'jiangmiao/auto-pairs' "括号配对
 
 " Theme
 Plug 'joshdick/onedark.vim'
@@ -55,6 +55,7 @@ set statusline+=%5*\%3p%%\%*            "显示光标前文本所占总文本的
 
 
 
+
 let g:rainbow_active=1
 
 " 			YCM
@@ -72,11 +73,8 @@ let g:ycm_goto_buffer_command = 'horizontal-split' " 跳转打开上下分屏
 
 let g:ycm_enable_inlay_hints=1
 
-" 补全时候不要弹出原型窗口
-set completeopt=menu,menuone
-let g:ycm_add_preview_to_completeopt = 0
 
-let g:ycm_max_num_candidates = 30 " 语义补全候选数量
+let g:ycm_max_num_candidates = 20 " 语义补全候选数量
 let g:ycm_min_num_identifier_candidates = 5
 let g:ycm_max_num_identifier_candidates = 10 " 标识符候选数量
 
@@ -93,6 +91,8 @@ set foldmethod=syntax
 set autoindent
 set showcmd
 set mouse=a
+set hlsearch
+set incsearch
 
 filetype indent on
 
@@ -115,6 +115,7 @@ noremap <F4> :YcmCompleter GoToDocumentOutline<CR>
 noremap <C-s> :call Save_Format()<CR>
 noremap <C-h> :YcmCompleter FixIt<CR>
 noremap <C-k> :YcmCompleter GetType<CR>
+noremap <F12> :YcmCompleter RestartServer<CR>
 
 def Save_Format() 
 	:w
