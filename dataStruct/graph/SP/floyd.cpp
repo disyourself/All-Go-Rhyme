@@ -8,12 +8,12 @@ typedef struct Graph
 {
     char *vexs;
     int **edges;
-    int vexNum;
-    int edgeNum;
+    int   vexNum;
+    int   edgeNum;
 } Graph;
 
 Graph *
-initGraph (int num)
+initGraph(int num)
 {
     Graph *G = new Graph;
     G->vexs  = new char[num];
@@ -26,8 +26,7 @@ initGraph (int num)
     return G;
 }
 
-void
-creatGraph (Graph *G, std::string vexs, int *edges)
+void creatGraph(Graph *G, std::string vexs, int *edges)
 {
     for (int i = 0; i < G->vexNum; ++i)
     {
@@ -42,20 +41,18 @@ creatGraph (Graph *G, std::string vexs, int *edges)
     G->edgeNum /= 2;
 }
 
-void
-DFS (Graph *G, int *visited, int index)
+void DFS(Graph *G, int *visited, int index)
 {
-    printf ("%c ", G->vexs[index]);
+    printf("%c ", G->vexs[index]);
     visited[index] = 1;
     for (int i = 0; i < G->vexNum; ++i)
     {
         if (G->edges[index][i] > 0 && G->edges[index][i] != MAX && !visited[i])
-            DFS (G, visited, i);
+            DFS(G, visited, i);
     }
 }
 
-void
-floyd (Graph *G)
+void floyd(Graph *G)
 {
     int d[G->vexNum][G->vexNum];
     int p[G->vexNum][G->vexNum];
@@ -84,37 +81,35 @@ floyd (Graph *G)
     for (auto &i : d)
     {
         for (auto &j : i)
-            printf ("%d\t", j);
-        printf ("\n");
+            printf("%d\t", j);
+        printf("\n");
     }
-    printf ("\n");
+    printf("\n");
     for (auto &i : p)
     {
         for (auto &j : i)
-            printf ("%d\t", j);
-        printf ("\n");
+            printf("%d\t", j);
+        printf("\n");
     }
 }
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    Graph *G       = initGraph (4);
-    int arcs[4][4] = {
-        { 0, 1, MAX, 3 },
-        { 1, 0, 2, 2 },
-        { MAX, 2, 0, 8 },
-        { 3, 2, 8, 0 }
-    };
-    creatGraph (G, "1234567", (int *)arcs);
+    Graph *G          = initGraph(4);
+    int    arcs[4][4] = {
+           {0, 1, MAX, 3},
+           {1, 0, 2, 2},
+           {MAX, 2, 0, 8},
+           {3, 2, 8, 0}};
+    creatGraph(G, "1234567", (int *)arcs);
 
     int *visited = new int[G->vexNum];
     for (int i = 0; i < G->vexNum; ++i)
         visited[i] = 0;
-    DFS (G, visited, 0);
-    printf ("\n\n");
+    DFS(G, visited, 0);
+    printf("\n\n");
 
-    floyd (G);
+    floyd(G);
 
     return 0;
 }

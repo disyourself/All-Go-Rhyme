@@ -1,7 +1,8 @@
 
 call plug#begin()
 
-Plug 'ycm-core/YouCompleteMe'
+"Plug 'ycm-core/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree'  "目录树
 Plug 'frazrepo/vim-rainbow' "彩虹括号
 Plug 'tpope/vim-surround'
@@ -10,20 +11,6 @@ Plug 'jiangmiao/auto-pairs' "括号配对
 " Theme
 Plug 'joshdick/onedark.vim'
 Plug 'rakr/vim-one'
-
-
-Plug 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plug 'L9'
-
-Plug 'git://git.wincent.com/command-t.git'
-"Plug 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plug 'ascenator/L9', {'name': 'newL9'}
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -45,6 +32,7 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
+
 " Status Tab
 set laststatus=2
 set statusline=%1*\%<%.50F\             "显示文件名和文件路径 (%<应该可以去掉)
@@ -58,41 +46,26 @@ set statusline+=%5*\%3p%%\%*            "显示光标前文本所占总文本的
 
 let g:rainbow_active=1
 
-" 			YCM
-" Let clangd fully control code completion
-let g:ycm_clangd_uses_ycmd_caching = 0
-" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = "/usr/sbin/clangd"
-" 允许自动加载.ycm_extra_conf.py，不再提示                         
-let g:ycm_confirm_extra_conf=0    
-" 补全功能在注释中同样有效                                         
-let g:ycm_complete_in_comments=1    
-" 开启tags补全引擎                                                 
-let g:ycm_collect_identifiers_from_tags_files=1   
-let g:ycm_goto_buffer_command = 'horizontal-split' " 跳转打开上下分屏
 
-let g:ycm_enable_inlay_hints=1
-
-
-let g:ycm_max_num_candidates = 20 " 语义补全候选数量
-let g:ycm_min_num_identifier_candidates = 5
-let g:ycm_max_num_identifier_candidates = 10 " 标识符候选数量
-
-let g:ycm_warning_symbol = "W"   " 警告标志
-
+set encoding=utf-8
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
 syntax on
 syntax enable
 set shiftwidth=4
 set tabstop=4
 set cindent
 set number
-set path+=/usr/local/include/
 set foldmethod=syntax
 set autoindent
 set showcmd
 set mouse=a
 set hlsearch
 set incsearch
+
+set list
+set listchars=tab:→\ ,eol:↓
 
 filetype indent on
 
@@ -105,27 +78,75 @@ set background=dark " for the dark version
 colorscheme onedark
 
 
-" clang jump
-map <C-j> :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" Make <TAB> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+ inoremap <silent><expr> <TAB>  coc#pum#visible() ? coc#pum#confirm():"\<TAB>"
+
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader> rn <Plug>(coc-rename)
+
+
+" hover show detail or 'K'
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+
 " Neartree
 map <F3> :NERDTreeMirror<CR>
 map <F3> :NERDTreeToggle<CR>
-noremap <C-d> :call SavedAndOpenTerm()<CR>
-noremap <F4> :YcmCompleter GoToDocumentOutline<CR>
-noremap <C-s> :call Save_Format()<CR>
-noremap <C-h> :YcmCompleter FixIt<CR>
-noremap <C-k> :YcmCompleter GetType<CR>
-noremap <F12> :YcmCompleter RestartServer<CR>
-
-def Save_Format() 
-	:w
-	:YcmCompleter Format
-enddef
+noremap <C-d> :call SavedAndOpenTerm()<CR>&& :w<CR>
+noremap <C-s> :call SaveAndFormat()<CR>
+noremap <C-h> <Plug>(coc-fix-current)
 
 def SavedAndOpenTerm()
 	:w
 	:bo term 
 enddef
+
+function SaveAndFormat()
+	call CocAction('format')
+	:w
+endfunction
+
+
+" Highlight the symbol and its references when holding the cursor.
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
 
 
 
@@ -139,4 +160,5 @@ hi User5 cterm=none ctermfg=green ctermbg=0
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
 
