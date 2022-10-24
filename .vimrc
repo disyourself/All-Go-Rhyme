@@ -111,13 +111,13 @@ endfunction
 " Neartree
 map <F3> :NERDTreeMirror<CR>
 map <F3> :NERDTreeToggle<CR>
-noremap <C-d> :call SavedAndOpenTerm()<CR>&& :w<CR>
+noremap <C-d> :call SavedAndOpenTerm()<CR>
 noremap <C-s> :call SaveAndFormat()<CR>
 noremap <C-h> <Plug>(coc-fix-current)
 
 def SavedAndOpenTerm()
 	:w
-	:bo term 
+	:bo term
 enddef
 
 function SaveAndFormat()
