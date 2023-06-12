@@ -1,12 +1,11 @@
 #include <stdio.h>
 
 
-void
-printArr (int *arr, int length)
+void printArr(int *arr, int length)
 {
     for (int i = 0; i < length; ++i)
-        printf ("%d ", arr[i]);
-    printf ("\n");
+        printf("%d ", arr[i]);
+    printf("\n");
 }
 
 
@@ -18,8 +17,7 @@ printArr (int *arr, int length)
  * @param length
  * @param step
  */
-void
-shellSort (int *arr, int length, int step)
+void shellSort(int *arr, int length, int step)
 {
     for (int i = 0; i < length; ++i)
         // compare 2 elements of opposite pos of step
@@ -40,18 +38,17 @@ shellSort (int *arr, int length, int step)
                 }
 }
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    int arr[10] = { 49, 38, 65, 97, 76, 13, 29, 49, 55, 4 };
-    printArr (arr, 10);
+    int arr[10] = {49, 38, 65, 97, 76, 13, 29, 49, 55, 4};
+    printArr(arr, 10);
 
     int step = 5;
     while (step >= 1)
     {
-        shellSort (arr, 10, step);
+        shellSort(arr, 10, step);
         step /= 2;
-        printArr (arr, 10);
+        printArr(arr, 10);
     }
 
     return 0;

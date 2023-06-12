@@ -30,7 +30,7 @@ class HeapTimerNode
   public:
     HeapTimerNode(int delay)
     {
-        //m_expire    = delay;
+        // m_expire    = delay;
         m_expire    = time(nullptr) + delay;
         m_validFlag = true;
     }

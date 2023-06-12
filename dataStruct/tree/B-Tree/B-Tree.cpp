@@ -11,7 +11,7 @@ typedef struct Node
 } Node;
 
 Node *
-initNode (int level)
+initNode(int level)
 {
     Node *node     = new Node;
     node->level    = level;
@@ -33,8 +33,7 @@ initNode (int level)
 }
 
 // find proper insert index in one node
-int
-findSuiteIndex (Node *node, int data)
+int findSuiteIndex(Node *node, int data)
 {
     int index;
     for (index = 1; index <= node->keyNum; ++index)
@@ -46,22 +45,21 @@ findSuiteIndex (Node *node, int data)
 
 // find proper insert leaf in one node's children
 Node *
-findSuiteLeafNode (Node *T, int data)
+findSuiteLeafNode(Node *T, int data)
 {
     if (T->childNum == 0)
         return T;
     // have children, is a root node
     else
     {
-        int index = findSuiteIndex (T, data);
-        return findSuiteLeafNode (T->children[index - 1], data);
+        int index = findSuiteIndex(T, data);
+        return findSuiteLeafNode(T->children[index - 1], data);
     }
 }
 
-void
-addData (Node *node, int data, Node **T)
+void addData(Node *node, int data, Node **T)
 {
-    int index = findSuiteIndex (node, data);
+    int index = findSuiteIndex(node, data);
 
     for (int i = node->keyNum; i >= index; i--)
     {
@@ -75,14 +73,14 @@ addData (Node *node, int data, Node **T)
     {
         // find split pos
         int   mid    = node->level / 2 + node->level % 2;
-        Node *lchild = initNode (node->level);
-        Node *rchild = initNode (node->level);
+        Node *lchild = initNode(node->level);
+        Node *rchild = initNode(node->level);
 
         for (int i = 1; i < mid; ++i)
-            addData (lchild, node->keys[i], T);
+            addData(lchild, node->keys[i], T);
 
         for (int i = mid + 1; i <= node->keyNum; ++i)
-            addData (rchild, node->keys[i], T);
+            addData(rchild, node->keys[i], T);
 
         // move node's left part children to  mid that split's left child
         for (int i = 0; i < mid; ++i)
@@ -110,8 +108,8 @@ addData (Node *node, int data, Node **T)
         // operations to parent
         if (node->parent == nullptr)
         {
-            Node *newParent = initNode (node->level);
-            addData (newParent, node->keys[mid], T);
+            Node *newParent = initNode(node->level);
+            addData(newParent, node->keys[mid], T);
 
             newParent->children[0] = lchild;
             newParent->children[1] = rchild;
@@ -122,7 +120,7 @@ addData (Node *node, int data, Node **T)
         }
         else
         {
-            int index      = findSuiteIndex (node->parent, node->keys[mid]);
+            int index      = findSuiteIndex(node->parent, node->keys[mid]);
             lchild->parent = node->parent;
             rchild->parent = node->parent;
             // replace the pos that node's mid move to its parent after splited left
@@ -137,57 +135,54 @@ addData (Node *node, int data, Node **T)
             node->parent->children[index] = rchild;
             node->parent->childNum++;
 
-            addData (node->parent, node->keys[mid], T);
+            addData(node->parent, node->keys[mid], T);
         }
         /* for more infomation ./B-Tree_split_graph/B-Tree_split_graph.png */
     }
 }
 
-void
-insert (Node **T, int data)
+void insert(Node **T, int data)
 {
-    Node *node = findSuiteLeafNode (*T, data);
-    addData (node, data, T);
+    Node *node = findSuiteLeafNode(*T, data);
+    addData(node, data, T);
 }
 
-void
-printTree (Node *T)
+void printTree(Node *T)
 {
     if (T != nullptr)
     {
         // i =1 <= keyNum
         for (int i = 1; i <= T->keyNum; i++)
-            printf ("%d ", T->keys[i]);
-        printf ("\n");
+            printf("%d ", T->keys[i]);
+        printf("\n");
 
         for (int i = 0; i < T->childNum; ++i)
-            printTree (T->children[i]);
+            printTree(T->children[i]);
     }
 }
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    Node *T = initNode (5);
-    insert (&T, 1);
-    insert (&T, 2);
-    insert (&T, 3);
-    insert (&T, 4);
-    insert (&T, 5);
-    insert (&T, 6);
-    insert (&T, 7);
-    insert (&T, 8);
-    insert (&T, 9);
-    insert (&T, 10);
-    insert (&T, 11);
-    insert (&T, 12);
-    insert (&T, 13);
-    insert (&T, 14);
-    insert (&T, 15);
-    insert (&T, 16);
-    insert (&T, 17);
+    Node *T = initNode(5);
+    insert(&T, 1);
+    insert(&T, 2);
+    insert(&T, 3);
+    insert(&T, 4);
+    insert(&T, 5);
+    insert(&T, 6);
+    insert(&T, 7);
+    insert(&T, 8);
+    insert(&T, 9);
+    insert(&T, 10);
+    insert(&T, 11);
+    insert(&T, 12);
+    insert(&T, 13);
+    insert(&T, 14);
+    insert(&T, 15);
+    insert(&T, 16);
+    insert(&T, 17);
 
-    printTree (T);
+    printTree(T);
 
     return 0;
 }

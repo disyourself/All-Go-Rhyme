@@ -8,12 +8,12 @@ typedef struct Graph
 {
     char *vexs;
     int **edges;
-    int vexNum;
-    int edgeNum;
+    int   vexNum;
+    int   edgeNum;
 } Graph;
 
 Graph *
-initGraph (int num)
+initGraph(int num)
 {
     Graph *G = new Graph;
     G->vexs  = new char[num];
@@ -26,8 +26,7 @@ initGraph (int num)
     return G;
 }
 
-void
-creatGraph (Graph *G, std::string vexs, int *edges)
+void creatGraph(Graph *G, std::string vexs, int *edges)
 {
     for (int i = 0; i < G->vexNum; ++i)
     {
@@ -42,20 +41,18 @@ creatGraph (Graph *G, std::string vexs, int *edges)
     G->edgeNum /= 2;
 }
 
-void
-DFS (Graph *G, int *visited, int index)
+void DFS(Graph *G, int *visited, int index)
 {
-    printf ("%c ", G->vexs[index]);
+    printf("%c ", G->vexs[index]);
     visited[index] = 1;
     for (int i = 0; i < G->vexNum; ++i)
     {
         if (G->edges[index][i] > 0 && G->edges[index][i] != MAX && !visited[i])
-            DFS (G, visited, i);
+            DFS(G, visited, i);
     }
 }
 
-int
-getMin (int *d, int *s, Graph *G)
+int getMin(int *d, int *s, Graph *G)
 {
     int min = MAX;
     int index;
@@ -68,8 +65,7 @@ getMin (int *d, int *s, Graph *G)
     return index;
 }
 
-void
-dijstra (Graph *G, int index)
+void dijstra(Graph *G, int index)
 {
     int *s = new int[G->vexNum]; // solved
     int *p = new int[G->vexNum]; // previous Vertex
@@ -88,12 +84,12 @@ dijstra (Graph *G, int index)
     }
 
     for (int i = 0; i < G->vexNum; ++i)
-        printf ("%d\t%d\t%d\n", s[i], p[i], d[i]);
-    printf ("---------------------------------\n");
+        printf("%d\t%d\t%d\n", s[i], p[i], d[i]);
+    printf("---------------------------------\n");
 
     for (int i = 0; i < G->vexNum - 1; i++)
     {
-        index    = getMin (d, s, G);
+        index    = getMin(d, s, G);
         s[index] = 1;
         for (int j = 0; j < G->vexNum; j++)
         {
@@ -106,32 +102,30 @@ dijstra (Graph *G, int index)
     }
 
     for (int i = 0; i < G->vexNum; ++i)
-        printf ("%d\t%d\t%d\n", s[i], p[i], d[i]);
-    printf ("---------------------------------\n");
+        printf("%d\t%d\t%d\n", s[i], p[i], d[i]);
+    printf("---------------------------------\n");
 }
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    Graph *G       = initGraph (7);
-    int arcs[7][7] = {
-        { 0, 12, MAX, MAX, MAX, 16, 14 },
-        { 12, 0, 10, MAX, MAX, 7, MAX },
-        { MAX, 10, 0, 3, 5, 6, MAX },
-        { MAX, MAX, 3, 0, 4, MAX },
-        { MAX, MAX, 5, 4, 0, 2, 8 },
-        { 16, 7, 6, MAX, 2, 0, 9 },
-        { 14, MAX, MAX, MAX, 8, 9, 0 }
-    };
-    creatGraph (G, "1234567", (int *)arcs);
+    Graph *G          = initGraph(7);
+    int    arcs[7][7] = {
+        {0, 12, MAX, MAX, MAX, 16, 14},
+        {12, 0, 10, MAX, MAX, 7, MAX},
+        {MAX, 10, 0, 3, 5, 6, MAX},
+        {MAX, MAX, 3, 0, 4, MAX},
+        {MAX, MAX, 5, 4, 0, 2, 8},
+        {16, 7, 6, MAX, 2, 0, 9},
+        {14, MAX, MAX, MAX, 8, 9, 0}};
+    creatGraph(G, "1234567", (int *)arcs);
 
     int *visited = new int[G->vexNum];
     for (int i = 0; i < G->vexNum; ++i)
         visited[i] = 0;
-    DFS (G, visited, 0);
-    printf ("\n");
+    DFS(G, visited, 0);
+    printf("\n");
 
-    dijstra (G, 0);
+    dijstra(G, 0);
 
     return 0;
 }
